@@ -9,6 +9,6 @@ import java.util.UUID;
 
 public interface LancamentoRepository extends JpaRepository<Lancamento, UUID> {
 
-    List<Lancamento> findByUsuario(Usuario usuario0);
+    List<Lancamento> findByUsuario(Usuario usuario);
 
 }
