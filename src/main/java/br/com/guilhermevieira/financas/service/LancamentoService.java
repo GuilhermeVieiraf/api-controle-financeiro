@@ -2,10 +2,12 @@ package br.com.guilhermevieira.financas.service;
 
 import br.com.guilhermevieira.financas.dto.LancamentoRequestDTO;
 import br.com.guilhermevieira.financas.dto.LancamentoResponseDTO;
+import br.com.guilhermevieira.financas.mapper.LancamentoMapper;
 import br.com.guilhermevieira.financas.model.Lancamento;
 import br.com.guilhermevieira.financas.model.Usuario;
 import br.com.guilhermevieira.financas.repository.LancamentoRepository;
 import br.com.guilhermevieira.financas.repository.UsuarioRepository;
+import br.com.guilhermevieira.financas.service.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,29 +19,15 @@ public class LancamentoService {
 
     private final LancamentoRepository lancamentoRepository;
     private final UsuarioRepository usuarioRepository;
-
+    private final LancamentoMapper lancamentoMapper;
     public LancamentoResponseDTO criarLancamento(UUID usuarioId, LancamentoRequestDTO requestDTO) {
-        var usuarioOptional = usuarioRepository.findById(usuarioId);
-        var usuario = usuarioOptional.orElseThrow(() -> new RuntimeException("Usuário não econtrado!"));
 
-        var lancamento = new Lancamento();
-        lancamento.setDescricao(requestDTO.descricao());
-        lancamento.setValor(requestDTO.valor());
-        lancamento.setTipo(requestDTO.tipo());
-        lancamento.setCategoria(requestDTO.categoria());
-        lancamento.setData(requestDTO.data());
-        lancamento.setUsuario(usuario);
+        var usuario = usuarioRepository.findById(usuarioId)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado!"));
 
+        var lancamento = lancamentoMapper.toEntity(requestDTO, usuario);
         var lancamentoSalvo = lancamentoRepository.save(lancamento);
-
-        return new LancamentoResponseDTO(
-                lancamentoSalvo.getId(),
-                lancamentoSalvo.getDescricao(),
-                lancamentoSalvo.getValor(),
-                lancamentoSalvo.getTipo(),
-                lancamentoSalvo.getData(),
-                lancamentoSalvo.getCategoria()
-        );
+        return lancamentoMapper.toResponseDTO(lancamentoSalvo);
 
     }
 
