@@ -3,8 +3,6 @@ package br.com.guilhermevieira.financas.service;
 import br.com.guilhermevieira.financas.dto.LancamentoRequestDTO;
 import br.com.guilhermevieira.financas.dto.LancamentoResponseDTO;
 import br.com.guilhermevieira.financas.mapper.LancamentoMapper;
-import br.com.guilhermevieira.financas.model.Lancamento;
-import br.com.guilhermevieira.financas.model.Usuario;
 import br.com.guilhermevieira.financas.repository.LancamentoRepository;
 import br.com.guilhermevieira.financas.repository.UsuarioRepository;
 import br.com.guilhermevieira.financas.service.exception.ResourceNotFoundException;
