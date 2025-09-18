@@ -29,4 +29,10 @@ public class LancamentoService {
 
     }
 
+    public LancamentoResponseDTO buscarPorId(UUID id) {
+        var lancamentoEntity = lancamentoRepository
+                .findById(id).orElseThrow(() -> new ResourceNotFoundException("Lançamento não encontrado!"));
+        return lancamentoMapper.toResponseDTO(lancamentoEntity);
+    }
+
 }
